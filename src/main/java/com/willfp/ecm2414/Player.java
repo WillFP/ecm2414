@@ -3,6 +3,8 @@ package com.willfp.ecm2414;
 import com.willfp.ecm2414.cards.CardDeck;
 import com.willfp.ecm2414.cards.CardHand;
 
+import java.util.Objects;
+
 public class Player implements Numbered {
     private final int number;
 
@@ -24,7 +26,10 @@ public class Player implements Numbered {
 
     public boolean checkInitialWin() {
         if (hand.isWinning()) {
-
+            logWin();
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -33,17 +38,14 @@ public class Player implements Numbered {
      *
      * @return If the player won.
      */
-    public boolean play() {
+    public synchronized boolean play() {
         int card = leftDeck.drawCard();
 
         log.log("draws a " + card + " from deck " + leftDeck.getNumber());
-
         hand.dealCard(card);
 
         int discarded = hand.discardNonPreferredCard();
-
         rightDeck.discardCard(discarded);
-
         log.log("discards a " + discarded + " to deck " + rightDeck.getNumber());
 
         log.log("current hand is " + hand.formatCards());
@@ -75,5 +77,19 @@ public class Player implements Numbered {
     @Override
     public int getNumber() {
         return number;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Player player)) {
+            return false;
+        }
+
+        return player.getNumber() == this.getNumber();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(number);
     }
 }

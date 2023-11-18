@@ -17,7 +17,7 @@ public class CardHand extends CardList {
      *
      * @return If the hand is a winning hand.
      */
-    public boolean isWinning() {
+    public  boolean isWinning() {
         boolean areSame = true;
 
         List<Integer> cards = getCards();
@@ -37,14 +37,16 @@ public class CardHand extends CardList {
      *
      * @return The discarded card.
      */
-    public int discardNonPreferredCard() {
-        int discarded = getCards().stream().filter(
+    public synchronized int discardNonPreferredCard() {
+        List<Integer> canDiscard = getCards().stream().filter(
                 it -> it != player.getNumber()
-        ).findAny().orElseThrow(() -> new IllegalStateException("No non-preferred card to discard."));
+        ).toList();
 
-        getCards().remove(discarded);
+        Integer randomCard = canDiscard.get((int) (Math.random() * canDiscard.size()));
 
-        return discarded;
+        getCards().remove(randomCard);
+
+        return randomCard;
     }
 
     /**

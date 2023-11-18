@@ -14,7 +14,7 @@ public class CardDeck extends CardList implements Numbered {
      *
      * @return The top card.
      */
-    public int drawCard() {
+    public synchronized int drawCard() {
         return getCards().remove(0);
     }
 
@@ -23,7 +23,7 @@ public class CardDeck extends CardList implements Numbered {
      *
      * @param card The card.
      */
-    public void discardCard(final int card) {
+    public synchronized void discardCard(final int card) {
         getCards().add(card);
     }
 

@@ -2,8 +2,14 @@ package com.willfp.ecm2414;
 
 import com.willfp.ecm2414.cards.CardDeck;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CardGame {
@@ -14,8 +20,7 @@ public class CardGame {
     private final List<CardDeck> decks = new ArrayList<>();
     private final List<Player> players = new ArrayList<>();
 
-    public CardGame(final int playerCount,
-                    final String packPath) {
+    public CardGame(final int playerCount, final String packPath) {
         this.pack = loadPack(packPath);
 
         for (int i = 1; i <= playerCount; i++) {
@@ -40,8 +45,6 @@ public class CardGame {
                 cardsLeft--;
             }
         }
-
-
     }
 
     public void play() {
@@ -52,27 +55,19 @@ public class CardGame {
             }
         }
 
-        List<Thread> threads = new ArrayList<>();
-        AtomicBoolean won = new AtomicBoolean(false);
+        List<ThreadedPlayer> threads = new ArrayList<>();
 
         for (Player player : players) {
-            threads.add(new Thread(() -> {
-                while (!won.get()) {
-                    if (player.play()) {
-                        won.set(true);
-                        player.logWin();
-                        for (Player otherPlayer : players) {
-                            if (otherPlayer != player) {
-                                otherPlayer.notifyOfWin(player);
-                            }
-                        }
-                    }
-                }
-            }));
+            ThreadedPlayer threadedPlayer = new ThreadedPlayer(player);
+            threads.add(threadedPlayer);
         }
 
-        for (Thread thread : threads) {
-            thread.start();
+        for (ThreadedPlayer threadedPlayer : threads) {
+            threadedPlayer.setPlayers(threads);
+        }
+
+        for (ThreadedPlayer threadedPlayer : threads) {
+            threadedPlayer.start();
         }
     }
 
@@ -84,7 +79,30 @@ public class CardGame {
      * @param path The path to the pack file.
      */
     private List<Integer> loadPack(final String path) {
-        return new ArrayList<>();
+        try {
+            List<String> lines = new ArrayList<>();
+
+            try (InputStream is = this.getClass().getResourceAsStream(path);
+                 InputStreamReader isr = new InputStreamReader(is);
+                 BufferedReader reader = new BufferedReader(isr)) {
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    lines.add(line);
+                }
+            }
+
+            List<Integer> deck = new ArrayList<>(
+                    lines.stream().map(Integer::parseInt).toList()
+            );
+
+            Collections.shuffle(deck);
+
+            return deck;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalStateException("Failed to load pack.");
+        }
     }
 
     public static void main(String[] args) {
@@ -92,7 +110,7 @@ public class CardGame {
         int players = 4;
 
         // TODO: Get pack path from input
-        String packPath = "pack.txt";
+        String packPath = "/pack.txt";
 
         CardGame game = new CardGame(players, packPath);
 
