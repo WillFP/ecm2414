@@ -18,8 +18,8 @@ tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 
-java {
+tasks.withType<Jar> {
     manifest {
-        attributes["Main-Class"] = "com.willfp.ecm2418.CardGame"
+        attributes["Main-Class"] = "com.willfp.ecm2414.CardGame"
     }
 }
