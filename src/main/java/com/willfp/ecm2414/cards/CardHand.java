@@ -48,13 +48,4 @@ public class CardHand extends CardList {
 
         return randomCard;
     }
-
-    /**
-     * Format cards as a string.
-     *
-     * @return The formatted cards.
-     */
-    public String formatCards() {
-        return String.join(" ", getCards().stream().map(String::valueOf).toArray(String[]::new));
-    }
 }

@@ -33,36 +33,62 @@ public class Player implements Numbered {
         }
     }
 
+    private void runChecked(final Runnable task) {
+        if (!Thread.currentThread().isInterrupted()) {
+            task.run();
+        }
+    }
+
+    public CardDeck getLeftDeck() {
+        return leftDeck;
+    }
+
+    public CardDeck getRightDeck() {
+        return rightDeck;
+    }
+
     /**
      * Play a turn.
      *
      * @return If the player won.
      */
     public synchronized boolean play() {
-        int card = leftDeck.drawCard();
+        runChecked(() -> {
+            int card = leftDeck.drawCard();
+            log.log("draws a " + card + " from deck " + leftDeck.getNumber());
+            hand.dealCard(card);
+        });
 
-        log.log("draws a " + card + " from deck " + leftDeck.getNumber());
-        hand.dealCard(card);
+        runChecked(() -> {
+            int discarded = hand.discardNonPreferredCard();
+            rightDeck.discardCard(discarded);
+            log.log("discards a " + discarded + " to deck " + rightDeck.getNumber());
+        });
 
-        int discarded = hand.discardNonPreferredCard();
-        rightDeck.discardCard(discarded);
-        log.log("discards a " + discarded + " to deck " + rightDeck.getNumber());
-
-        log.log("current hand is " + hand.formatCards());
+        runChecked(() -> {
+            log.log("current hand is " + hand.formatCards());
+        });
 
         return hand.isWinning();
     }
 
     public void logWin() {
-        log.log("wins");
-        log.log("exits");
-        log.log("final hand: " + hand.formatCards());
+        runChecked(() -> {
+            log.printLog("wins");
+            log.log("wins");
+            log.log("exits");
+            log.log("final hand: " + hand.formatCards());
+            log.stop();
+        });
     }
 
     public void notifyOfWin(final Player winner) {
-        log.log(winner, "has informed player " + number + " that player " + winner.getNumber() + " has won");
-        log.log("exits");
-        log.log("hand: " + hand.formatCards());
+        runChecked(() -> {
+            log.log(winner, "has informed player " + number + " that player " + winner.getNumber() + " has won");
+            log.log("exits");
+            log.log("hand: " + hand.formatCards());
+            log.stop();
+        });
     }
 
     /**

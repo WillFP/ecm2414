@@ -27,4 +27,13 @@ public abstract class CardList {
     protected synchronized List<Integer> getCards() {
         return cards;
     }
+
+    /**
+     * Format cards as a string.
+     *
+     * @return The formatted cards.
+     */
+    public final String formatCards() {
+        return String.join(" ", getCards().stream().map(String::valueOf).toArray(String[]::new));
+    }
 }

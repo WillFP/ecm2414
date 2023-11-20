@@ -82,7 +82,7 @@ public class CardGame {
         try {
             List<String> lines = new ArrayList<>();
 
-            try (InputStream is = this.getClass().getResourceAsStream(path);
+            try (InputStream is = this.getClass().getResourceAsStream("/" + path);
                  InputStreamReader isr = new InputStreamReader(is);
                  BufferedReader reader = new BufferedReader(isr)) {
 
@@ -110,7 +110,7 @@ public class CardGame {
         int players = 4;
 
         // TODO: Get pack path from input
-        String packPath = "/pack.txt";
+        String packPath = "pack.txt";
 
         CardGame game = new CardGame(players, packPath);
 

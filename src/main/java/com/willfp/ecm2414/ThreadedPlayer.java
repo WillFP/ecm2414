@@ -34,6 +34,7 @@ public class ThreadedPlayer implements Runnable {
     }
 
     public void stop() {
+        thread.interrupt();
         executor.shutdown();
     }
 
@@ -42,10 +43,13 @@ public class ThreadedPlayer implements Runnable {
         while (!thread.isInterrupted()) {
             if (this.player.play()) {
                 for (ThreadedPlayer otherPlayer : otherPlayers) {
-                    otherPlayer.player.notifyOfWin(player);
                     otherPlayer.stop();
+                    otherPlayer.player.notifyOfWin(player);
                 }
-                this.player.logWin();
+                // Check again
+                if (!thread.isInterrupted()) {
+                    this.player.logWin();
+                }
                 stop();
             }
         }
