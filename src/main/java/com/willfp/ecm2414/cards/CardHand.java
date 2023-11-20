@@ -17,7 +17,7 @@ public class CardHand extends CardList {
      *
      * @return If the hand is a winning hand.
      */
-    public  boolean isWinning() {
+    public boolean isWinning() {
         boolean areSame = true;
 
         List<Integer> cards = getCards();

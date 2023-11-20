@@ -17,3 +17,9 @@ dependencies {
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
+
+java {
+    manifest {
+        attributes["Main-Class"] = "com.willfp.ecm2418.CardGame"
+    }
+}
