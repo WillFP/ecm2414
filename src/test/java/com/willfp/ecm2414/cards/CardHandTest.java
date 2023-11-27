@@ -4,7 +4,6 @@ import com.willfp.ecm2414.Player;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ class CardHandTest {
 
     @BeforeEach
     void setUp() {
-        Player player = new Player(1, Mockito.mock(CardDeck.class), Mockito.mock(CardDeck.class));
+        Player player = new Player(1, new CardDeck(1), new CardDeck(2));
         cardHand = new CardHand(player);
     }
 
