@@ -13,13 +13,11 @@ import java.util.Scanner;
 public class CardGame {
     private static final int CARDS_PER_PLAYER = 4;
 
-    private final List<Integer> pack;
-
-    private final List<CardDeck> decks = new ArrayList<>();
     private final List<Player> players = new ArrayList<>();
 
     public CardGame(final int playerCount, final String packPath) {
-        this.pack = loadPack(packPath);
+        List<Integer> pack = loadPack(packPath);
+        List<CardDeck> decks = new ArrayList<>();
 
         for (int i = 1; i <= playerCount; i++) {
             decks.add(new CardDeck(i));
@@ -76,7 +74,7 @@ public class CardGame {
      *
      * @param path The path to the pack file.
      */
-    private List<Integer> loadPack(final String path) {
+    public List<Integer> loadPack(final String path) {
         try {
             List<String> lines = new ArrayList<>();
 
@@ -101,6 +99,15 @@ public class CardGame {
             e.printStackTrace();
             throw new IllegalStateException("Failed to load pack.");
         }
+    }
+
+    /**
+     * Get the players.
+     *
+     * @return The players.
+     */
+    public List<Player> getPlayers() {
+        return players;
     }
 
     public static void main(String[] args) {

@@ -33,7 +33,7 @@ public abstract class CardList {
      *
      * @return The cards.
      */
-    protected synchronized List<Integer> getCards() {
+    public synchronized List<Integer> getCards() {
         return cards;
     }
 

@@ -91,6 +91,24 @@ public class ThreadedPlayer implements Runnable {
         }
     }
 
+    /**
+     * Get the other players.
+     *
+     * @return The other players.
+     */
+    public List<ThreadedPlayer> getOtherPlayers() {
+        return otherPlayers;
+    }
+
+    /**
+     * Get the thread.
+     *
+     * @return The thread.
+     */
+    public Thread getThread() {
+        return thread;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof ThreadedPlayer p)) {

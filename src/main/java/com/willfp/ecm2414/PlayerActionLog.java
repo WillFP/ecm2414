@@ -72,7 +72,7 @@ public class PlayerActionLog {
      * @param message The raw message.
      * @return The formatted message.
      */
-    private String formatMessage(final Player player, final String message) {
+    public String formatMessage(final Player player, final String message) {
         return "player " + player.getNumber() + " " + message;
     }
 
@@ -107,5 +107,14 @@ public class PlayerActionLog {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Get the logs.
+     *
+     * @return The logs.
+     */
+    public List<String> getLogs() {
+        return logs;
     }
 }

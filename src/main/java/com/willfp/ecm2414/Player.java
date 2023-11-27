@@ -27,7 +27,7 @@ public class Player implements Numbered {
     /**
      * The player's current cards.
      */
-    private final CardHand hand = new CardHand(this);
+    private CardHand hand = new CardHand(this);
 
     /**
      * The action log.
@@ -159,6 +159,15 @@ public class Player implements Numbered {
      */
     public CardHand getHand() {
         return hand;
+    }
+
+    /**
+     * Set the hand.
+     *
+     * @param hand The hand.
+     */
+    public void setHand(final CardHand hand) {
+        this.hand = hand;
     }
 
     @Override
