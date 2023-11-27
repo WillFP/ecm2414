@@ -3,9 +3,18 @@ package com.willfp.ecm2414.cards;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Represents a list of cards, e.g. a deck or a hand.
+ */
 public abstract class CardList {
+    /**
+     * A thread-safe list of cards.
+     */
     private final List<Integer> cards = new CopyOnWriteArrayList<>();
 
+    /**
+     * Create a new card list.
+     */
     protected CardList() {
 
     }

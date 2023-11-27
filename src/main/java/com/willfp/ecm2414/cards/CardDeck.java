@@ -2,9 +2,20 @@ package com.willfp.ecm2414.cards;
 
 import com.willfp.ecm2414.Numbered;
 
+/**
+ * A card deck does not belong to a player.
+ */
 public class CardDeck extends CardList implements Numbered {
+    /**
+     * The deck number.
+     */
     private final int number;
 
+    /**
+     * Create a new card deck.
+     *
+     * @param number The number.
+     */
     public CardDeck(final int number) {
         this.number = number;
     }

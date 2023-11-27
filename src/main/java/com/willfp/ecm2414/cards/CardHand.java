@@ -5,9 +5,20 @@ import com.willfp.ecm2414.Player;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents the current card hand for a player.
+ */
 public class CardHand extends CardList {
+    /**
+     * The player that holds the hand.
+     */
     private final Player player;
 
+    /**
+     * Create a new hand.
+     *
+     * @param player The player.
+     */
     public CardHand(final Player player) {
         this.player = player;
     }

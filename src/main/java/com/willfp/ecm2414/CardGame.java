@@ -7,10 +7,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Scanner;
 
 public class CardGame {
     private static final int CARDS_PER_PLAYER = 4;
@@ -106,14 +104,18 @@ public class CardGame {
     }
 
     public static void main(String[] args) {
-        // TODO: Get player count from input
-        int players = 4;
+        Scanner in = new Scanner(System.in);
 
-        // TODO: Get pack path from input
-        String packPath = "pack.txt";
+        try {
+            System.out.println("Choose a number of players:");
+            int players = Integer.parseInt(in.nextLine());
 
-        CardGame game = new CardGame(players, packPath);
+            System.out.println("Choose the name of the pack");
+            String packPath = in.nextLine();
 
-        game.play();
+            new CardGame(players, packPath).play();
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number of players!");
+        }
     }
 }
