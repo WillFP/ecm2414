@@ -111,9 +111,11 @@ public class ThreadedPlayer implements Runnable {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ThreadedPlayer p)) {
+        if (!(obj instanceof ThreadedPlayer)) {
             return false;
         }
+
+        ThreadedPlayer p = (ThreadedPlayer) obj;
 
         return p.player.equals(this.player);
     }

@@ -3,8 +3,11 @@ package com.willfp.ecm2414;
 import com.willfp.ecm2414.cards.CardDeck;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -78,7 +81,13 @@ public class CardGame {
         try {
             List<String> lines = new ArrayList<>();
 
-            try (InputStream is = this.getClass().getResourceAsStream("/" + path);
+            // The current directory
+            String jarDir = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParent();
+
+            // Build the path to the file in the same directory as the JAR
+            File file = Paths.get(jarDir, path).toFile();
+
+            try (InputStream is = new FileInputStream(file);
                  InputStreamReader isr = new InputStreamReader(is);
                  BufferedReader reader = new BufferedReader(isr)) {
 
@@ -96,8 +105,33 @@ public class CardGame {
 
             return deck;
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Failed to load pack.");
+            // Default pack inside JAR resources, for testing.
+            try {
+                List<String> lines = new ArrayList<>();
+
+                System.out.println("Failed to load pack from file. Loading default pack.");
+
+                try (InputStream is = this.getClass().getResourceAsStream("/" + path);
+                     InputStreamReader isr = new InputStreamReader(is);
+                     BufferedReader reader = new BufferedReader(isr)) {
+
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        lines.add(line);
+                    }
+                }
+
+                List<Integer> deck = new ArrayList<>(
+                        lines.stream().map(Integer::parseInt).toList()
+                );
+
+                Collections.shuffle(deck);
+
+                return deck;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                throw new IllegalStateException("Failed to load pack.");
+            }
         }
     }
 

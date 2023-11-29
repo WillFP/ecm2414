@@ -177,9 +177,11 @@ public class Player implements Numbered {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Player player)) {
+        if (!(obj instanceof Player)) {
             return false;
         }
+
+        Player player = (Player) obj;
 
         return player.getNumber() == this.getNumber();
     }
